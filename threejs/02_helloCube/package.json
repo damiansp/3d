@@ -1,0 +1,16 @@
+{
+  "name": "hellocube",
+  "version": "1.0.0",
+  "description": "Basic setup of three.js",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "three": "^0.135.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damian Satterthwaite-Phillips <damiansp@gmail.com>",
+  "license": "ISC"
+}

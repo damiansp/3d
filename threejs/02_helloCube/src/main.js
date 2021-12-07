@@ -8,11 +8,11 @@ import {
     WebGLRenderer } from 'three';
 
 
-const H = container.clientHeight;
-const W = container.clientWidth;
 
 // Scene
 const container = document.querySelector('#scene-container');
+const H = container.clientHeight;
+const W = container.clientWidth;
 const scene = new Scene();
 scene.background = new Color('skyblue');
 
