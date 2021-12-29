@@ -11,8 +11,10 @@
 
 # Dirs
 #------------------------
+learn/libs/
 node_modules/
 three.js/
+Learn-Three.js-Third-Edition/
 
 
 # Logs
