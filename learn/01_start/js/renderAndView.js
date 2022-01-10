@@ -8,6 +8,7 @@ function init() {
     let renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(new THREE.Color(0x000000));
     renderer.setSize(W, H);
+    renderer.shadowMap.enabled = true;
 
     const axes = new THREE.AxesHelper(20);
     scene.add(axes);
@@ -18,6 +19,7 @@ function init() {
     let plane = new THREE.Mesh(planeGeom, planeMat);
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.set(15, 0, 0);
+    plane.receiveShadow = true;
     scene.add(plane)
 
     // Cube
@@ -25,6 +27,7 @@ function init() {
     const cubeMat = new THREE.MeshLambertMaterial({color: 0xFF0000});
     let cube = new THREE.Mesh(cubeGeom, cubeMat);
     cube.position.set(-4, 3, 0);
+    cube.castShadow = true;
     scene.add(cube);
 
     // Sphere
@@ -32,6 +35,7 @@ function init() {
     const sphereMat = new THREE.MeshLambertMaterial({color: 0x7777FF});
     let sphere = new THREE.Mesh(sphereGeom, sphereMat);
     sphere.position.set(20, 4, 2);
+    sphere.castShadow = true;
     scene.add(sphere);
 
     // Set camera
@@ -45,7 +49,7 @@ function init() {
     spotlight.shadow.mapSize = new THREE.Vector2(1024, 1024);
     spotlight.shadow.camera.far = 130;
     spotlight.shadow.camera.near = 40;
-    scene.add(spotlight)
+    scene.add(spotlight);
 
     document.getElementById('webgl-output').appendChild(renderer.domElement);
     renderer.render(scene, camera);
