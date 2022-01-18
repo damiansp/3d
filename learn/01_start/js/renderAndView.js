@@ -3,6 +3,8 @@ const H = window.innerHeight;
 
 
 function init() {
+    let stats = initStats();
+    
     let scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
     let renderer = new THREE.WebGLRenderer();
@@ -51,6 +53,13 @@ function init() {
     spotlight.shadow.camera.near = 40;
     scene.add(spotlight);
 
+
+    function renderScene() {
+        stats.update();
+        requestAnimationFrame(renderScene);
+        renderer.render(scene, camera);
+    }
+
     document.getElementById('webgl-output').appendChild(renderer.domElement);
-    renderer.render(scene, camera);
+    renderScene();
 }
