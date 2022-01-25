@@ -53,11 +53,26 @@ function init() {
     spotlight.shadow.camera.near = 40;
     scene.add(spotlight);
 
+    let step = 0;
 
     function renderScene() {
         stats.update();
+        spinCube();
+        bounceSphere();
         requestAnimationFrame(renderScene);
         renderer.render(scene, camera);
+    }
+
+    function spinCube() {
+        cube.rotation.x += 0.02;
+        cube.rotation.y += 0.025;
+        cube.rotation.z += 0.03
+    }
+
+    function bounceSphere() {
+        sphere.position.x = 20 + 10*Math.cos(step);
+        sphere.position.y = 2 + 10*Math.abs(Math.sin(step));
+        step += 0.04;
     }
 
     document.getElementById('webgl-output').appendChild(renderer.domElement);
