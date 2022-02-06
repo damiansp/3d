@@ -54,8 +54,26 @@ function init() {
     scene.add(spotlight);
 
     let step = 0;
+    let controls = new function() {
+        this.rotationSpeedX = 0.02;
+        this.rotationSpeedY = 0.03;
+        this.rotationSpeedZ = 0.05;
+        this.bounceSpeed = 0.03;
+    }
+    
+    let gui = new dat.GUI();
+    gui.add(controls, 'rotationSpeedX', 0, 0.5);
+    gui.add(controls, 'rotationSpeedY', 0, 0.5);
+    gui.add(controls, 'rotationSpeedZ', 0, 0.5);
+    gui.add(controls, 'bounceSpeed', 0, 0.5);
+
+    document.getElementById('webgl-output').appendChild(renderer.domElement);
+    let trackballControls = initTrackballControls(camera, renderer);
+    let clock = new THREE.Clock();
+    renderScene();
 
     function renderScene() {
+        trackballControls.update(clock.getDelta());
         stats.update();
         spinCube();
         bounceSphere();
@@ -64,17 +82,14 @@ function init() {
     }
 
     function spinCube() {
-        cube.rotation.x += 0.02;
-        cube.rotation.y += 0.025;
-        cube.rotation.z += 0.03
+        cube.rotation.x += controls.rotationSpeedX;
+        cube.rotation.y += controls.rotationSpeedY;
+        cube.rotation.z += controls.rotationSpeedZ;
     }
 
     function bounceSphere() {
         sphere.position.x = 20 + 10*Math.cos(step);
         sphere.position.y = 2 + 10*Math.abs(Math.sin(step));
-        step += 0.04;
+        step += controls.bounceSpeed;
     }
-
-    document.getElementById('webgl-output').appendChild(renderer.domElement);
-    renderScene();
 }
