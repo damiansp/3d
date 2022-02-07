@@ -1,13 +1,17 @@
 const W = window.innerWidth;
 const H = window.innerHeight;
+let scene;
+let camera;
+let renderer;
 
 
 function init() {
+    window.addEventListener('resize', onResize, false);
     let stats = initStats();
     
-    let scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
-    let renderer = new THREE.WebGLRenderer();
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(new THREE.Color(0x000000));
     renderer.setSize(W, H);
     renderer.shadowMap.enabled = true;
@@ -72,6 +76,12 @@ function init() {
     let clock = new THREE.Clock();
     renderScene();
 
+    function onResize() {
+        camera.aspect = W / H
+        camera.updateProjectionMatrix();
+        renderer.setSize(W, H);
+    }
+        
     function renderScene() {
         trackballControls.update(clock.getDelta());
         stats.update();
