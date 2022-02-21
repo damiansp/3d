@@ -37,10 +37,11 @@ function init() {
     document.getElementById("webgl-output").appendChild(renderer.domElement);
 
     let step = 0;
+
     let controls = new function() {
         this.rotationSpeed = 0.02;
         this.nObjects = scene.children.length
-
+        
         this.removeCube = function() {
             let allChildren = scene.children;
             let lastObj = allChildren[allChildren.length - 1];
@@ -49,7 +50,56 @@ function init() {
                 this.nObjects = scene.children.length;
             }
         };
+        
+        this.addCube = function() {
+            const cubeSize = Math.ceil((Math.random() * 6));
+            const cubeGeom = new THREE.BoxGeometry(
+                cubeSize, cubeSize, cubeSize);
+            const cubeMat = new THREE.MeshLambertMaterial(
+                {color: Math.random() * 0xffffff});
+            let cube = new THREE.Mesh(cubeGeom, cubeMat);
+            cube.castShadow = true;
+            cube.name = 'cube-' + scene.children.length;
+            cube.position.x = (
+                -30
+                + Math.round(Math.random() * planeGeom.parameters.width));
+            cube.position.y = Math.round(Math.random() * 5);
+            cube.position.z = (
+                -20
+                + Math.round(Math.random() * planeGeom.parameters.height));
+            scene.add(cube);
+            this.nObjectse = scene.children.length;
+        };
+        
+        this.outputObjects = function() {
+            console.log(scene.children);
+        };
+    };
+    
+    let gui = new dat.GUI();
+    gui.add(controls, 'rotationSpeed', 0, 0.5);
+    gui.add(controls, 'addCube');
+    gui.add(controls, 'removeCube');
+    gui.add(controls, 'outputObjects');
+    gui.add(controls, 'nObjects').listen();
 
-        this.addCube = function() {};
+    let trackballControls = initTrackballControls(camera, renderer);
+    let clock = new THREE.Clock();
+
+    render();
+
+    function render() {
+        trackballControls.update(clock.getDelta());
+        stats.update();
+        // rotate cubes
+        scene.traverse(function(e) {
+            if (e instanceof THREE.Mesh && e != plane) {
+                e.rotation.x += controls.rotationSpeed;
+                e.rotation.y += controls.rotationSpeed;
+                e.rotation.z += controls.rotationSpeed;
+            }
+        });
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
     }
 }
