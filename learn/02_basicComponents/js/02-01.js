@@ -102,4 +102,7 @@ function init() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
+
+    scene.fog = new THREE.Fog(0xddddff, 0.015, 100); // color, near, far
+    //scene.fog = new THREE.FogExp2(0xccffdd, 0.01); // color, density
 }
