@@ -39,7 +39,7 @@ function init() {
     scene.add(plane);
 
     addGeometries(scene);
-    document.getElementById('webgl-output').appendChilde(renderer.domElement);
+    document.getElementById('webgl-output').appendChild(renderer.domElement);
     
     let step = 0;
 
@@ -79,5 +79,41 @@ function init() {
                 THREE.ParametricGeometries.mobius3d, 20, 10));
         geoms.push(new THREE.TetrahedronGeometry(3));
         geoms.push(new THREE.TorusGeometry(3, 1, 10, 10));
+        geoms.push(new THREE.TorusKnotGeometry(3, 0.5, 50, 20));
+        let j = 0;
+        for (let i = 0; i < geoms.length; i++) {
+            const cubeMat = new THREE.MeshLambertMaterial(
+                {wireframe: true, color: Math.random() * 0xffffff});
+            let materials = [
+                new THREE.MeshLambertMaterial(
+                    {color: Math.random() * 0xffffff}),
+                new THREE.MeshBasicMaterial(
+                    {color: 0x000000, wireframe: true})];
+            let mesh = THREE.SceneUtils.createMultiMaterialObject(
+                geoms[i], materials);
+            mesh.traverse(
+                function (e) {
+                    e.castShadow = true;
+                });
+            mesh.position.x = -24 + ((i % 4) * 12);
+            mesh.position.y = 4;
+            mesh.position.z = -8 + (j * 12);
+            if ((i + 1) % 4 == 0) {
+                j++;
+            }
+            scene.add(mesh);
+        }
+    }
+
+    let trackballControls = initTrackballControls(camera, renderer);
+    let clock = new THREE.Clock();
+    render();
+
+
+    function render() {
+        trackballControls.update(clock.getDelta());
+        stats.update();
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
     }
 }
